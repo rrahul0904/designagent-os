@@ -1,0 +1,23 @@
+:root {
+  --accent: #8b5cf6;
+}
+
+.hero-title {
+  background: linear-gradient(90deg, #8b5cf6, #6366f1);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.badge {
+  border-radius: 9999px;
+  backdrop-filter: blur(18px);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card {
+  transition: transform 200ms ease;
+}
