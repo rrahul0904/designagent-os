@@ -1,0 +1,7 @@
+services:
+  designagent:
+    build: .
+    ports:
+      - "4317:4317"
+    environment:
+      PORT: 4317
