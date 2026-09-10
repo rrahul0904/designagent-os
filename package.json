@@ -1,0 +1,19 @@
+{
+  "name": "designagent-os",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Design intelligence and UI quality control plane for AI-generated software",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node src/server/index.js",
+    "test": "node --test src/tests/*.test.js",
+    "analyze": "node src/cli/index.js"
+  },
+  "bin": {
+    "designagent": "./src/cli/index.js"
+  },
+  "license": "MIT"
+}
