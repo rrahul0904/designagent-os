@@ -12,6 +12,8 @@ The project turns the core idea behind "humanize-ui" into a broader engineering 
 - Deterministic UI quality scoring
 - Product-archetype design guidance
 - Component-source registry and ranking
+- Original design-style registry with deterministic `SKILL.md` + `DESIGN.md` generation
+- Provenance-preserving evidence-to-`DESIGN.md` compilation
 - CLI and HTTP API
 - Agent skill packaging
 - Automated tests and CI
@@ -30,14 +32,16 @@ Design DNA Extractor
         |
         +--> Component Intelligence
         |
+        +--> Style Registry / Design Document Compiler
+        |
         v
-UI Intelligence Report
+UI Intelligence Report / DESIGN.md
         |
         v
 Agent / CLI / API / Future Web UI
 ```
 
-See `docs/ARCHITECTURE.md`, `docs/PROJECT_PLAN.md`, and `docs/IMPLEMENTATION_PLAN.md`.
+See `docs/ARCHITECTURE.md`, `docs/PROJECT_PLAN.md`, `docs/IMPLEMENTATION_PLAN.md`, and `docs/reverse-engineering/skillsui-design-library.md`.
 
 ## Development
 
@@ -49,11 +53,19 @@ npm run analyze -- examples/generic-ai.css
 npm start
 ```
 
-Then open `http://localhost:4317`.
+Design-document commands:
+
+```bash
+node src/cli/index.js styles
+node src/cli/index.js compile-style precision-light
+node src/cli/index.js design-md evidence.json
+```
+
+Then open `http://localhost:4317` for the API. The new style/document routes are `GET /api/styles`, `GET /api/styles/:slug`, `POST /api/styles/:slug/documents`, and `POST /api/design-md/evidence`.
 
 ## Status
 
-Initial implementation draft. The repository is intentionally structured so the deterministic design-intelligence core can evolve independently from the future browser automation, visual evaluation, GitHub ingestion, and SaaS layers.
+Initial implementation draft. The deterministic design-intelligence core, original style registry, paired document compiler, and structured evidence compiler are repository implemented. Screenshot pixel understanding, browser previews, hosted upload processing, billing/entitlements, and production visual certification remain future work.
 
 ## License
 
