@@ -2,6 +2,13 @@ import http from "node:http";
 import { analyzeSource } from "../core/report.js";
 import { compileStyleDocuments, getDesignStyle, listDesignStyles } from "../core/design-style-library.js";
 import { compileDesignMdFromEvidence } from "../core/design-evidence.js";
+import { compileDesignMdFromHtml } from "../core/html-design-evidence.js";
+import {
+  compileDesignTransferPlan,
+  normalizeReferenceManifest,
+  searchDesignReferences,
+  verifyDesignTransferInvariants
+} from "../core/design-reference-library.js";
 
 const PORT = Number(process.env.PORT || 4317);
 const MAX_BODY = 1_000_000;
@@ -61,6 +68,35 @@ const server = http.createServer((req, res) => {
 
   if (req.method === "POST" && req.url === "/api/design-md/evidence") {
     return readJson(req, res, payload => send(res, 200, compileDesignMdFromEvidence(payload)));
+  }
+
+  if (req.method === "POST" && req.url === "/api/design-md/html") {
+    return readJson(req, res, payload => {
+      if (typeof payload.html !== "string") return send(res, 400, { error: "html must be a string" });
+      return send(res, 200, compileDesignMdFromHtml(payload.html, { sourceName: payload.sourceName || "api-html" }));
+    });
+  }
+
+  if (req.method === "POST" && req.url === "/api/references/search") {
+    return readJson(req, res, payload => {
+      const manifest = payload.manifest ?? payload.references;
+      const references = normalizeReferenceManifest(manifest, payload.defaults || {});
+      return send(res, 200, {
+        references: searchDesignReferences(references, payload.query || "", payload.options || {})
+      });
+    });
+  }
+
+  if (req.method === "POST" && req.url === "/api/design-transfer/plan") {
+    return readJson(req, res, payload => {
+      return send(res, 200, compileDesignTransferPlan(payload.reference, payload.targetContract));
+    });
+  }
+
+  if (req.method === "POST" && req.url === "/api/design-transfer/verify") {
+    return readJson(req, res, payload => {
+      return send(res, 200, verifyDesignTransferInvariants(payload.expectedContract, payload.actualContract));
+    });
   }
 
   if (req.method === "POST" && req.url === "/api/analyze") {
